@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: orders
+      MYSQL_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app_network
+
+  rabbitmq:
+    image: arm64v8/rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app_network
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+      - "50051:50051"
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+      - mysql
+
+    networks:
+      - app_network
+
+volumes:
+  db_data: {}
+
+networks:
+  app_network:
+    driver: bridge
