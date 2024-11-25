@@ -2,7 +2,7 @@
 
 ## Proposta
 
-Criar um usecase para retornar uma lista das __orders__ criadas e ter a possibilidade de visualizar por REST, gRPC e GraphQL.
+Criar um usecase para retornar uma lista das __orders__ criadas e ter a possibilidade de lista-las por REST, gRPC e GraphQL.
 
 ## Setup 
 
